@@ -13,7 +13,6 @@ public class Book implements Serializable {
         this.author = author;
         this.description = description;
     }
-
     @Override
     public String toString() {
         return "Book " +
