@@ -8,6 +8,7 @@ import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//Läser om till fil
 public class FileUtility {
 
     public static void saveObject(String filename, Object o, StandardOpenOption... option) {

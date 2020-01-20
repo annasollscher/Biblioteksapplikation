@@ -3,8 +3,10 @@ package com.company;
 public class Main {
 
     public static void main(String[] args) {
-	Library lib = new Library();
-	lib.start();
+        //skapar en ny library
+        Library lib = new Library();
+	   //startat upp library
+	   lib.start();
 
     }
 }
