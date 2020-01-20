@@ -34,14 +34,12 @@ public class Library {
         users = (ArrayList<User>) FileUtility.loadObject(LISTOFUSER_FILE);
     }
     //logIn metod
-    //Om användarens namn stämmer överrens med det användaren matar in, logga in
-    //While true loop
+    //Om användarens namn stämmer överrens med det användaren matar in, loggar man in
     //Läser in via scanner, går igenom alla User via en for - loop
     //Om användarens namn stämmer överrens med det användaren matar in
     //Loggar in med den användaren (this.user = user)
     private void logIn () {
         while (true) {
-            System.out.println(users);
             System.out.println("Write your username");
             String userName = scanner.nextLine();
             for (User user : users) {
@@ -67,6 +65,7 @@ public class Library {
     public void showMenu() {
         boolean continueToRun = true;
         System.out.println("------Welcome to the library--------");
+        System.out.println("------------------------------------");
         while (continueToRun) {
             System.out.println("-----------Make a choice-----------:");
             System.out.println("1. Show all books");
@@ -96,7 +95,7 @@ public class Library {
                     searchBook();
                     break;
                 case 5:
-                    showBorrowedBook();
+                    showBorrowedBooks();
                     break;
                 case 6:
                     returnBook();
@@ -107,7 +106,6 @@ public class Library {
             }
         }
     }
-
     //metod som lägger till användare, som sparas till en fil
     //En metod som visar alla böcker via for-each-loop
     private void showBooks() {
@@ -129,30 +127,56 @@ public class Library {
         System.out.println(books.get(choice -1));
     }
     //metod som visar lånade böcker
+    //Lista av tillgängliga böcker
+    //Går igenom alla böcker
+    //om boken inte är utlånad (! book.isBorrowed)
+    //lägger man till boken i listan
     private void borrowBook() {
-        for (int i = 0; i < books.size(); i++) {
-            System.out.printf("%d. %s \n", i + 1, books.get(i).getTitle());
+        ArrayList<Book> availableBooks = new ArrayList<>();
+        for(Book book : books) {
+            if(!book.isBorrowed()){
+                availableBooks.add(book);
+            }
+        }
+        //Går igenom de tillgängliga böckerna och skriver ut de, (i++ = lägger till)
+        // %d = i + 1, %s = availableBooks + title
+        for (int i = 0; i < availableBooks.size(); i++) {
+            System.out.printf("%d. %s \n", i + 1, availableBooks.get(i).getTitle());
+        }
+        //Användaren kan mata in ett index som scannas in
+        // -1 för att listan börjar på 0
+        //Hämtar tillgängliga böcker som man kan låna
+        System.out.println("Enter index book to borrow");
+        int choice = Integer.parseInt(scanner.nextLine());
+        user.borrowBook(availableBooks.get(choice -1));
+    }
+    //Metod där man kan söka på bok, på titel eller författare
+    private void searchBook() {
+
+    }
+
+    //Metod som visar de lånade böckerna, Foor - each loop som lopar igenom användarens lånade böcker, via get metoden
+    //Går igenom böckerna som en användare har lånat
+    private void showBorrowedBooks() {
+        for(Book book: user.getBorrowedBooks()) {
+            System.out.println(book);
+        }
+    }
+    //Metod som lämnar tillbaka bok
+    //Skriver ut alla lånade böcker som användaren har lånat, via for-loop
+    private void returnBook() {
+        for (int i = 0; i < user.getBorrowedBooks().size(); i++) {
+            System.out.printf("%d. %s \n", i + 1, user.getBorrowedBooks().get(i).getTitle());
         }
         //Användaren kan mata in ett index som scannas in
         // -1 för att listan börjar på 0
         //Hämtar böckerna
-        System.out.println("Enter index book to borrow");
+        //Anropar returnBook från user, skickar med boken som användaren har valt, .get hämtar ut en specifik bok, -1
+        //för att listan börjar på 0, -1 är första på listan
+        System.out.println("Enter index of book to return");
         int choice = Integer.parseInt(scanner.nextLine());
-        System.out.println(books.get(choice -1));
+        user.returnBook(user.getBorrowedBooks().get(choice-1));
     }
-    //Metod där man kan söka på bok
-    private void searchBook() {
-    }
-
-    //Metod som visar de lånade böckerna
-    //Om en bok redan är utlånad ?
-    private void showBorrowedBook() {
-    }
-
-    //Metod som lämnar tillbaka bok
-    private void returnBook() {
-    }
-
     //Metod för att avsluta
     private void exit() {
     }
@@ -166,11 +190,12 @@ public class Library {
         bookList.add(new Book("Java, A beginner`s guide", "Herbert Schildt", "Studiebok om Java"));
         bookList.add(new Book("Nalle Puh", "A.A Milnes", "Om Nalle Puh och hans vänner i Sjumilaskogen"));
 
-        //sparar ner boklistan till fil
+        //FileUtility : sparar ner boklistan till fil
         FileUtility.saveObject(LISTOFBOOK_FILE, bookList);
     }
-    //Metod som skapar användare och lägger till
-    //Skriver de till en fil
+    //Metod som skapar användare och lägger till 3 st användare
+    //Skapar och lägger till 2 st bibliotikarier
+    //Skriver om de till en fil
     private void createUser () {
         List<User>defaultUser = new ArrayList<>();
         defaultUser.add(new User("Kalle"));
@@ -178,6 +203,7 @@ public class Library {
         defaultUser.add(new User("Stina"));
         defaultUser.add(new Librarian("Kajsa"));
         defaultUser.add(new Librarian("Pelle"));
+
         //Skriver ner user och librarian till fil
         FileUtility.saveObject(LISTOFUSER_FILE,defaultUser);
     }
