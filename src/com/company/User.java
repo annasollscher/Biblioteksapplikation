@@ -7,14 +7,22 @@ public class User implements Serializable {
     //Privat attribut name
     //Har en lista av böcker
     private String name;
-    private ArrayList<Book>books = new ArrayList<>();
+    //Lista av böcker som den användare har lånat
+    private ArrayList<Book> borrowedBooks = new ArrayList<>();
 
-    //konstruktor med namn
+    //konstruktor för att skapa User
     public User(String name) {
         this.name = name;
     }
-    //metod som visar lånade böcker
-    public void showBorrowedBooks () {
+    public String getName() {
+        return name;
     }
-
+    //metod som visar lånade böcker
+    //Tar emot boken som ska lånas
+    //Anropar setBorroed (true) för att visa att boken är lånad
+    //Lägger till den lånade boken i listan
+    public void borrowedBook(Book book) {
+        book.setBorrowed(true);
+        borrowedBooks.add(book);
+    }
 }

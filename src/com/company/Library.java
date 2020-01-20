@@ -16,11 +16,12 @@ public class Library {
 
     private ArrayList<Book> books = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
-
     //Scanner som läser in menyvalenprivate
+    //Inloggade användaren
+    private User user;
     private Scanner scanner = new Scanner(System.in);
 
-    //Om filen inte existerar, skapas den
+    //Om filen (if) inte existerar, skapas den, för book, user
     public Library() {
         if (!Files.exists(Path.of(LISTOFBOOK_FILE))) {
             createBook();
@@ -32,13 +33,36 @@ public class Library {
         books = (ArrayList<Book>) FileUtility.loadObject(LISTOFBOOK_FILE);
         users = (ArrayList<User>) FileUtility.loadObject(LISTOFUSER_FILE);
     }
-
+    //logIn metod
+    //Om användarens namn stämmer överrens med det användaren matar in, logga in
+    //While true loop
+    //Läser in via scanner, går igenom alla User via en for - loop
+    //Om användarens namn stämmer överrens med det användaren matar in
+    //Loggar in med den användaren (this.user = user)
+    private void logIn () {
+        while (true) {
+            System.out.println(users);
+            System.out.println("Write your username");
+            String userName = scanner.nextLine();
+            for (User user : users) {
+                if (user.getName().equals(userName)) {
+                    this.user = user;
+                    return;
+                }
+            }
+            //Annars, skrivs denna text ut:
+            System.out.println("Wrong username, try again!");
+        }
+    }
     //en startmetod som startar upp library
+    //Inlog visas
+    //När man loggar in, visas menyn
     public void start() {
+        logIn();
         showMenu();
     }
-
-    //Metod: visar menyn
+    //Metod som visar menyn
+    //Scanner som läser in
     //Så länge som continueToRun är sant, körs valen
     public void showMenu() {
         boolean continueToRun = true;
@@ -47,8 +71,8 @@ public class Library {
             System.out.println("-----------Make a choice-----------:");
             System.out.println("1. Show all books");
             System.out.println("2. Show information about a book");
-            System.out.println("3. Borrow book in my name");
-            System.out.println("4. Search by book, either book title or author");
+            System.out.println("3. Borrow book");
+            System.out.println("4. Search book");
             System.out.println("5.Show list with my borrowed books");
             System.out.println("6. Return book");
             System.out.println("9. Exit libraryprogram");
@@ -56,7 +80,8 @@ public class Library {
             System.out.print("Enter menu choice:");
             int choice = Integer.parseInt(scanner.nextLine());
 
-            //switch case meny där man kan välja olika alternativ, genom att trycka på valen
+            //switch case meny där man kan välja olika alternativ, genom att trycka på valen visas ex,
+            //böcker, info, lånade böcker osv...
             switch (choice) {
                 case 1:
                     showBooks();
@@ -90,29 +115,37 @@ public class Library {
             System.out.println(book);
         }
     }
-
-    //Metod som visar informationen om boken
+    //Metod som visar informationen om boken, genom en for-loop
     //Listan börjar från 1, enklare för användaren
     private void showInformation() {
         for (int i = 0; i < books.size(); i++) {
             System.out.printf("%d. %s \n", i + 1, books.get(i).getTitle());
         }
-        //Användaren kan mata in ett index
+        //Användaren kan mata in ett index som scannas in
         // -1 för att listan börjar på 0
+        //Hämtar böckerna
         System.out.println("Enter index of book");
         int choice = Integer.parseInt(scanner.nextLine());
         System.out.println(books.get(choice -1));
     }
-
     //metod som visar lånade böcker
     private void borrowBook() {
+        for (int i = 0; i < books.size(); i++) {
+            System.out.printf("%d. %s \n", i + 1, books.get(i).getTitle());
+        }
+        //Användaren kan mata in ett index som scannas in
+        // -1 för att listan börjar på 0
+        //Hämtar böckerna
+        System.out.println("Enter index book to borrow");
+        int choice = Integer.parseInt(scanner.nextLine());
+        System.out.println(books.get(choice -1));
     }
-
     //Metod där man kan söka på bok
     private void searchBook() {
     }
 
     //Metod som visar de lånade böckerna
+    //Om en bok redan är utlånad ?
     private void showBorrowedBook() {
     }
 
@@ -140,12 +173,11 @@ public class Library {
     //Skriver de till en fil
     private void createUser () {
         List<User>defaultUser = new ArrayList<>();
-        users.add(new User("Kalle"));
-        users.add(new User("Sven"));
-        users.add(new User("Stina"));
-        users.add(new Librarian("Kajsa"));
-        users.add(new Librarian("Pelle"));
-
+        defaultUser.add(new User("Kalle"));
+        defaultUser.add(new User("Sven"));
+        defaultUser.add(new User("Stina"));
+        defaultUser.add(new Librarian("Kajsa"));
+        defaultUser.add(new Librarian("Pelle"));
         //Skriver ner user och librarian till fil
         FileUtility.saveObject(LISTOFUSER_FILE,defaultUser);
     }
