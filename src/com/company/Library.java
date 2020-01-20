@@ -14,20 +14,36 @@ public class Library {
     private static final String LISTOFUSER_FILE = "users.ser";
     //Eventuellt ta med inlogg innan menyn?
 
+    private ArrayList<Book> books = new ArrayList<>();
+    private ArrayList<User> users = new ArrayList<>();
+
+    //Scanner som läser in menyvalenprivate
+    private Scanner scanner = new Scanner(System.in);
+
+    //Om filen inte existerar, skapas den
+    public Library() {
+        if (!Files.exists(Path.of(LISTOFBOOK_FILE))) {
+            createBook();
+        }
+        if (!Files.exists(Path.of(LISTOFUSER_FILE))) {
+            createUser();
+        }
+        //Del av konstruktorn, laddar in books och users från filen ovanför
+        books = (ArrayList<Book>) FileUtility.loadObject(LISTOFBOOK_FILE);
+        users = (ArrayList<User>) FileUtility.loadObject(LISTOFUSER_FILE);
+    }
+
     //en startmetod som startar upp library
-    public void start () {
+    public void start() {
         showMenu();
     }
 
-    //Scanner som läser in menyvalen
     //Metod: visar menyn
     //Så länge som continueToRun är sant, körs valen
-    Scanner scanner = new Scanner(System.in);
-    public void showMenu () {
+    public void showMenu() {
         boolean continueToRun = true;
         System.out.println("------Welcome to the library--------");
-        System.out.println("------------------------------------");
-        while(continueToRun) {
+        while (continueToRun) {
             System.out.println("-----------Make a choice-----------:");
             System.out.println("1. Show all books");
             System.out.println("2. Show information about a book");
@@ -40,7 +56,7 @@ public class Library {
             System.out.print("Enter menu choice:");
             int choice = Integer.parseInt(scanner.nextLine());
 
-            //switch case meny där man kan välja
+            //switch case meny där man kan välja olika alternativ, genom att trycka på valen
             switch (choice) {
                 case 1:
                     showBooks();
@@ -66,40 +82,46 @@ public class Library {
             }
         }
     }
-    //Private List av books
-    private ArrayList<Book>books = new ArrayList<>();
-    
-    //Om filen inte existerar, skapar en ny fil med böcker
-    //Om filen inte existerar, skapas en ny fil med användare
-    public Library() {
-        if(!Files.exists(Path.of(LISTOFBOOK_FILE))) {
-            createBook ();
-        }
-        if(!Files.exists(Path.of(LISTOFUSER_FILE))) {
-            createUser ();
-        }
-    }
+
     //metod som lägger till användare, som sparas till en fil
-    private void createUser() {
-    }
     //En metod som visar alla böcker via for-each-loop
-    private void showBooks () {
+    private void showBooks() {
         for (Book book : books) {
             System.out.println(book);
         }
     }
+
     //Metod som visar informationen om boken
-    private void showInformation () {
+    //Listan börjar från 1, enklare för användaren
+    private void showInformation() {
+        for (int i = 0; i < books.size(); i++) {
+            System.out.printf("%d. %s \n", i + 1, books.get(i).getTitle());
+        }
+        //Användaren kan mata in ett index
+        // -1 för att listan börjar på 0
+        System.out.println("Enter index of book");
+        int choice = Integer.parseInt(scanner.nextLine());
+        System.out.println(books.get(choice -1));
     }
-    private void borrowBook () {
+
+    //metod som visar lånade böcker
+    private void borrowBook() {
     }
-    private void searchBook () {
+
+    //Metod där man kan söka på bok
+    private void searchBook() {
     }
-    private void showBorrowedBook () {
+
+    //Metod som visar de lånade böckerna
+    private void showBorrowedBook() {
     }
-    private void returnBook () {
+
+    //Metod som lämnar tillbaka bok
+    private void returnBook() {
     }
-    private void exit () {
+
+    //Metod för att avsluta
+    private void exit() {
     }
 
     //metod som lägger till bok, som sparas i en fil
@@ -110,5 +132,21 @@ public class Library {
         bookList.add(new Book("En avlägsen kust", "Jenny Colgan", "Handlar om en ö som heter Mure och livet på ön"));
         bookList.add(new Book("Java, A beginner`s guide", "Herbert Schildt", "Studiebok om Java"));
         bookList.add(new Book("Nalle Puh", "A.A Milnes", "Om Nalle Puh och hans vänner i Sjumilaskogen"));
+
+        //sparar ner boklistan till fil
+        FileUtility.saveObject(LISTOFBOOK_FILE, bookList);
+    }
+    //Metod som skapar användare och lägger till
+    //Skriver de till en fil
+    private void createUser () {
+        List<User>defaultUser = new ArrayList<>();
+        users.add(new User("Kalle"));
+        users.add(new User("Sven"));
+        users.add(new User("Stina"));
+        users.add(new Librarian("Kajsa"));
+        users.add(new Librarian("Pelle"));
+
+        //Skriver ner user och librarian till fil
+        FileUtility.saveObject(LISTOFUSER_FILE,defaultUser);
     }
 }
