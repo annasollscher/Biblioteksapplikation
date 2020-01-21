@@ -10,7 +10,6 @@ import java.util.List;
 
 //Läser om till fil
 public class FileUtility {
-
     public static void saveObject(String filename, Object o, StandardOpenOption... option) {
         Path path = Paths.get(filename);
         try (ObjectOutputStream out = new ObjectOutputStream(Files.newOutputStream(path, option))) {
@@ -19,7 +18,6 @@ public class FileUtility {
             e.printStackTrace();
         }
     }
-
     public static Object loadObject(String filename) {
         Path path = Paths.get(filename);
         try (ObjectInputStream in = new ObjectInputStream(Files.newInputStream(path))) {

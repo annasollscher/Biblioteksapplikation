@@ -9,7 +9,6 @@ public class Book implements Serializable {
     private String description;
     private boolean isBorrowed;
 
-
     //Konstruktor för att skapa boken
     public Book(String title, String author, String description) {
         this.title = title;
