@@ -131,6 +131,10 @@ public class Library {
                     continueToRun = false;
                     exit();
                     break;
+                    //Om det användaren matar in är fel, kommer meddenandet nedan visas
+                default:
+                    System.out.println("----Wrong menu choice, try again!----");
+                    break;
             }
         }
     }
@@ -152,6 +156,11 @@ public class Library {
         //Hämtar böckerna
         //Anropar metod för att läsa in heltal från användaren
         int choice = readIntegerFromUser("Enter index of book");
+        //Om användaren matar in en otillåtet värde, skrivs felmeddelande ut och metoden avslutas
+        if(choice<1 || choice > books.size()) {
+            System.out.println("----Wrong number----");
+            return;
+        }
         System.out.println(books.get(choice -1));
     }
     //metod som visar lånade böcker
@@ -172,12 +181,16 @@ public class Library {
             System.out.printf("%d. %s \n", i + 1, availableBooks.get(i).getTitle());
         }
         //Användaren kan mata in ett index som scannas in
-        // -1 för att listan börjar på 0
+        // -1 för att listan börjar på 0, användarvänligt då första valet ska vara 1 och inte 0 (-1)
         //Hämtar tillgängliga böcker som man kan låna
-
         //Anropar metoden för att läsa in ett heltal
         int choice = readIntegerFromUser("Enter index book to borrow");
+        if(choice<1 || choice > availableBooks.size()) {
+            System.out.println("----Wrong number----");
+            return;
+        }
         user.borrowBook(availableBooks.get(choice -1));
+
     }
     //Metod där man kan söka på bok, genom olika val, titel, författare
     //En while loop med alternativ där man kan söka bok på titel eller författare, scanner för att läsa in
@@ -194,6 +207,10 @@ public class Library {
                 System.out.println("2. Search by author");
                 //Anropar metod för att mata in till ett heltal
                 int choice = readIntegerFromUser("----Enter choice-----");
+                if(choice <0 || choice >2) {
+                    System.out.println("---Wrong number---");
+                    return;
+                }
                 if(choice == 0 ) {
                     return;
                 }
@@ -226,10 +243,12 @@ public class Library {
                 // -1 för att listan börjar på 0
                 //Hämtar böckerna
                 //Anropar returnBook från user, skickar med boken som användaren har valt, .get hämtar ut en specifik bok, -1
-                //för att listan börjar på 0, -1 är första på listan
-
                 //Anropar metoden för att se om det användaren matar in var ett heltal
                 int choice = readIntegerFromUser("Enter index of book to return");
+                if(choice<1 || choice > user.getBorrowedBooks().size()) {
+                    System.out.println("----Wrong number----");
+                    return;
+                }
                 user.returnBook(user.getBorrowedBooks().get(choice - 1));
             }
             //Metod som visar tillgängliga böcker, om boken inte är utlånad - visas boken
