@@ -2,39 +2,38 @@ package com.company;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
 //implementerar Serializable för att kunna läsa om till fil
 public class User implements Serializable {
-    //Privat attribut name
-    //Har en lista av böcker
+    //Privat attribut med name:
+    // Lista av böcker som den användare har lånat (borrowedBooks)
     private String name;
-    //Lista av böcker som den användare har lånat
-    //Läggs det till den bok som den användaren har lånat
     private ArrayList<Book> borrowedBooks = new ArrayList<>();
 
-    //konstruktor för att skapa User
+    //konstruktor för att skapa User med namn
     public User(String name) {
         this.name = name;
     }
-    //Getter för att
+    //Getter för att hämta ut name
     public String getName() {
         return name;
     }
-
     //metod som visar lånade böcker
     //Tar emot boken som ska lånas
     //Anropar setBorroed (true) för att visa att boken är lånad
-    //Lägger till den lånade boken i listan
+    //Lägger till den lånade boken i listan borrowedBooks(borrowedBooks.add)
     public void borrowBook(Book book) {
         book.setBorrowed(true);
         borrowedBooks.add(book);
     }
+    //Skickar tillbaka en lista (returnerar den) med alla lånade böcker
     public ArrayList<Book> getBorrowedBooks() {
         return borrowedBooks;
     }
-    //Tar emot en bok som ska lämnas tillbaka
-    //SKickar in en bok som argument
+    //En metod som tar emot en bok som ska lämnas tillbaka
+    //SKickar in en bok som argument (Book book)
     //Ändrar att boken inte längre är lånad (setBorrowed = false)
-    //Tar bort boken från listan av lånade böcker
+    //Tar bort boken från listan av lånade böcker,(borrowedBooks.remove)
     public void returnBook (Book book) {
         book.setBorrowed(false);
         borrowedBooks.remove(book);

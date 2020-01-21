@@ -17,13 +17,13 @@ public class Library {
     private ArrayList<Book> books = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
 
-    //Inloggade användaren
+    //Nuvarande inloggade användaren, attribut i klassen
     //Scanner som läser in
     private User user;
     private Scanner scanner = new Scanner(System.in);
 
     //Konstruktor för library-klassen
-    //Om filen (if) inte existerar, skapas den, för book, user
+    //Om filen (if) inte existerar, skapas den, för book och user
     public Library() {
         if (!Files.exists(Path.of(LISTOFBOOK_FILE))) {
             createBook();
@@ -69,24 +69,23 @@ public class Library {
             try {
                 System.out.println(message);
                 //Omvandling, det som användaren läser in
-                //NumberFormatException = om det som användaren matar in ej kan omvandlas till ett tal
+                //NumberFormatException = om det som användaren matar in ej kan omvandlas till ett tal, skrivs
+                //texten nedan ut
                 return Integer.parseInt(scanner.nextLine());
               } catch (NumberFormatException number) {
                 System.out.println("----Could not convert to number, try again!----");
             }
         }
-
     }
-
-    //Metod som visar olika alternativ-val
+    //Metod som visar olika meny - alternativ-val som användaren kan välja
     //Scanner som läser in
     //Så länge som continueToRun är sant, körs valen
     public void showMenu() {
         boolean continueToRun = true;
-        System.out.println("------Welcome to the library--------");
-        System.out.println("------------------------------------");
+        System.out.println("---------Welcome to the library----------");
+        System.out.println("-----------------------------------------");
         while (continueToRun) {
-            System.out.println("-----------Make a choice-----------:");
+            System.out.println("-----------Make a choice---------");
             System.out.println("1. Show all books");
             System.out.println("2. Show information about a book");
             System.out.println("3. Borrow book");
@@ -97,6 +96,7 @@ public class Library {
             System.out.println("8. Show all users (librarian only)");
             System.out.println("9. Exit libraryprogram");
             Scanner scanner = new Scanner(System.in);
+
             //Anropar metoden för att läsa in heltal från användaren
             int choice = readIntegerFromUser("Enter menu choice");
 
@@ -133,19 +133,18 @@ public class Library {
                     break;
                     //Om det användaren matar in är fel, kommer meddenandet nedan visas
                 default:
-                    System.out.println("----Wrong menu choice, try again!----");
+                    System.out.println("--------Wrong menu choice, try again!--------");
                     break;
             }
         }
     }
-    //metod som lägger till användare, som sparas till en fil
     //En metod som visar alla böcker via for-each-loop
     private void showBooks() {
         for (Book book : books) {
             System.out.println(book);
         }
     }
-    //Metod som visar informationen om boken, genom en for-loop
+    //Går igenom varje bok och skriver ut den
     //Listan börjar från 1, enklare för användaren
     private void showInformation() {
         for (int i = 0; i < books.size(); i++) {
@@ -201,7 +200,6 @@ public class Library {
             System.out.println("-----------Make a choice-----------:");
             System.out.println("------------------------------------");
             while (continueToRun) {
-
                 System.out.println("0. Return to main menu");
                 System.out.println("1. Search by title");
                 System.out.println("2. Search by author");
@@ -297,6 +295,7 @@ public class Library {
                 defaultUser.add(new User("Stina"));
                 defaultUser.add(new Librarian("Kajsa"));
                 defaultUser.add(new Librarian("Pelle"));
+
                 //Skriver ner user och librarian till fil
                 FileUtility.saveObject(LISTOFUSER_FILE, defaultUser);
             }
