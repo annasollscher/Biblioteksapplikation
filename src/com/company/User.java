@@ -19,6 +19,7 @@ public class User implements Serializable {
     public String getName() {
         return name;
     }
+
     //metod som visar lånade böcker
     //Tar emot boken som ska lånas
     //Anropar setBorroed (true) för att visa att boken är lånad
