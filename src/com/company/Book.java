@@ -1,7 +1,6 @@
 package com.company;
 
 import java.io.Serializable;
-//privata attribut om title, författare, beskrivning om boken
 //huvudklassen implementerar Serializable
 //privata attribut, title, author, description, isBorrowed
 public class Book implements Serializable {
