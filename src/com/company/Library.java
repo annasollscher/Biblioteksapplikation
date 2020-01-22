@@ -33,7 +33,7 @@ public class Library {
         books = (ArrayList<Book>) FileUtility.loadObject(LISTOFBOOK_FILE);
         users = (ArrayList<User>) FileUtility.loadObject(LISTOFUSER_FILE);
     }
-    /**logIn metod där användaren ska skriva in ett namn
+    /**logIn metod där användaren ska skriva in ett inloggningsnamn
     *Läser in via scanner, går igenom alla User via en for-each loop
     *Om användarens namn stämmer överrens med det namn som användaren matar in, går det att logga in
     *Annars, skrivs texten "Wrong username..." ut
@@ -41,7 +41,7 @@ public class Library {
     private void logIn () {
         while (true) {
             System.out.println("-----------------------Dear user, welcome to the library-------------------------");
-            System.out.println("----------------------Please write your username to login------------------------");
+            System.out.println("----------------------Please write your username to login and press enter------------------------");
             String userName = scanner.nextLine();
             for (User user : users) {
                 if (user.getName().equals(userName)) {
@@ -84,7 +84,6 @@ public class Library {
      */
     public void showMenu() {
         boolean continueToRun = true;
-        System.out.println("---------DEAR USER, WELCOME TO THE LIBRARY!----------");
         while (continueToRun) {
             System.out.println("-------------PLEASE MAKE A CHOICE----------------");
             System.out.println("[1] Show all books");
@@ -126,7 +125,7 @@ public class Library {
                     showAllUsers();
                     break;
                 case 9:
-                    System.out.println("--------Shutting down program, hope to see you soon!---------");
+                    System.out.println("-------Shutting down the program, hope see you soon!------");
                     continueToRun = false;
                     exit();
                     break;
@@ -138,6 +137,7 @@ public class Library {
     }
     //En metod som visar alla böcker via for-each-loop som går igenom alla böcker och printar ut de
     private void showBooks() {
+        System.out.println("Here is a list of all books: ");
         for (Book book : books) {
             System.out.println(book);
         }
@@ -158,7 +158,7 @@ public class Library {
          */
         int choice = readIntegerFromUser("Enter the number of some of the book above to get more info about that book:");
         if (choice < 1 || choice > books.size()) {
-            System.out.println("---------Wrong number-------------");
+            System.out.println("----------------You typed in wrong number-------------");
             return;
         }
         System.out.println(books.get(choice -1));
@@ -185,12 +185,14 @@ public class Library {
         //If för att kontrollera om valet är mindre än 0 eller större än listans size
         // -1 för att listan börjar på 0, användarvänligt då första valet ska vara 1 och inte 0 (-1)
         //Hämtar tillgängliga böcker som man kan låna
-        int choice = readIntegerFromUser("Write the number of the book you wan't to borrow");
+        int choice = readIntegerFromUser("Please type the number of the book you wan't to borrow: ");
         if (choice < 0 || choice > availableBooks.size()) {                                  //tog bort +1 efter size
             System.out.println("------------Wrong number-------------");
             return;
         }
+        System.out.println("The book you borrowed: " + availableBooks.get(choice -1));
         user.borrowBook(availableBooks.get(choice -1));
+
     }
     /**Metod där man kan söka på bok, genom olika val, titel, författare
     *En while loop med alternativ där man kan söka bok på titel eller författare, scanner för att läsa in
@@ -206,9 +208,9 @@ public class Library {
                 System.out.println("1. Press 1 and enter to search by Title");
                 System.out.println("2. Press 2 and enter to search by Author");
                 //Anropar metod för att mata in till ett heltal
-                int choice = readIntegerFromUser("----Enter choice-----");
+                int choice = readIntegerFromUser("-------------Enter choice----------------");
                 if (choice < 0 || choice > 2) {
-                    System.out.println("--------------Wrong number-------------");
+                    System.out.println("--------------Dear user, you entered wrong number-------------");
                     return;
                 }
                 if (choice == 0) {
@@ -254,7 +256,7 @@ public class Library {
                 *Hämtar böckerna
                 *Anropar returnBook från user, skickar med boken som användaren har valt, .get hämtar ut en specifik bok
                  */
-                int choice = readIntegerFromUser("Enter index of book to return");
+                int choice = readIntegerFromUser("Please type the number of book you wan't to return: ");
                 if(choice<0 || choice > user.getBorrowedBooks().size()) {
                     System.out.println("----Wrong number----");
                     return;
@@ -263,6 +265,7 @@ public class Library {
             }
             //Metod som visar tillgängliga böcker, om boken inte är utlånad (!book.isBorrowed)- visas boken
             private void showAvailableBooks () {
+                System.out.println("Here are the available books: ");
                 for (Book book : books) {
                     if (!book.isBorrowed()) {
                         System.out.println(book);
@@ -273,10 +276,10 @@ public class Library {
            //Går igenom alla användare och skriver ut namnen (skriver även ut librarians, då dessa är en typ av användare)
             private void showAllUsers () {
                 if (!(user instanceof Librarian)) {
-                    System.out.println("Only available for librarians");
+                    System.out.println("Dear user, this choice is only available for the librarians");
                     return;
                 }
-                System.out.println("Here is the name of all the users in the library: ");
+                System.out.println("Dear librarian, here is the name of all users in the library: ");
                 for (User user : users) {
                     System.out.println(user.getName());
                 }
@@ -288,12 +291,12 @@ public class Library {
             FileUtility.saveObject(LISTOFBOOK_FILE,books);
             }
             //metod createBook. skapar en Lista av böcker och lägger till de i listan med title, author, description
-            private void createBook () {
+                private void createBook () {
                 List<Book> bookList = new ArrayList();
-                bookList.add(new Book("Harry Potter", "J.K Rowling", "En saga om trollkarlen Harry Potter"));
-                bookList.add(new Book("En avlägsen kust", "Jenny Colgan", "Handlar om en ö som heter Mure och livet på ön"));
-                bookList.add(new Book("Java, A beginner`s guide", "Herbert Schildt", "Studiebok om Java"));
-                bookList.add(new Book("Nalle Puh", "A.A Milnes", "Om Nalle Puh och hans vänner i Sjumilaskogen"));
+                bookList.add(new Book("Harry Potter","J.K Rowling", "A story about the wizard Harry Potter"));
+                bookList.add(new Book("A remote coust","Jenny Colgan", "Is about an island called Mure and life on the island"));
+                bookList.add(new Book("Java, A beginner`s guide", "Herbert Schildt", "Study-book about Java"));
+                bookList.add(new Book("Nalle Puh", "A.A Milnes", "About Nalle Puh and his friends in the forest"));
                 //FileUtility : sparar ner boklistan till fil
                 FileUtility.saveObject(LISTOFBOOK_FILE, bookList);
             }
@@ -305,6 +308,7 @@ public class Library {
                 defaultUser.add(new User("Sven"));
                 defaultUser.add(new User("Stina"));
                 defaultUser.add(new Librarian("Kajsa"));
+                defaultUser.add(new Librarian("Pelle"));
 
                 FileUtility.saveObject(LISTOFUSER_FILE, defaultUser);   //Skriver ner user och librarian till fil
             }

@@ -27,9 +27,9 @@ public class Book implements Serializable {
     @Override
     public String toString() {
         return "Book " +
-                "title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", description='" + description + '\'';
+                "title: " + title +
+                ", Author: " + author +
+                ", Description: " + description;
     }
     //Getter till Title, Author, Description för att kunna hämta ut dessa i andra klasser
     public String getTitle() {
