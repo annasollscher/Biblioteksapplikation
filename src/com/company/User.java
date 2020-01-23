@@ -30,7 +30,7 @@ public class User implements Serializable {
         return new ArrayList<>(borrowedBooks);
     }
     /** metod som tar emot en bok som ska lämnas tillbaka
-     * Returnerar boken som användaren lämnar tillbaka 
+     * Returnerar boken som användaren lämnar tillbaka
     *Tar emot ett index för boken som ska lämnast tillbaka
     *Tar bort boken från listan av lånade böcker,(borrowedBooks.remove)
      */
