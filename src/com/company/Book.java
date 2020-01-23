@@ -15,7 +15,7 @@ public class Book implements Serializable {
         this.author = author;
         this.description = description;
     }
-    //tilldelar själv ett värde, om den är utlånad eller ej
+    //Metod: Tilldelar sig själv ett värde, om den är utlånad eller ej
     public void setBorrowed(boolean borrowed) {
         isBorrowed = borrowed;
     }
