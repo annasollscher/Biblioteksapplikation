@@ -85,7 +85,7 @@ public class Library {
     public void showMenu() {
         boolean continueToRun = true;
         while (continueToRun) {
-            System.out.println("-------------PLEASE MAKE A CHOICE----------------");
+            System.out.println("-------------DEAR USER, PLEASE MAKE A CHOICE FROM THE LIST----------------");
             System.out.println("[1] Show all books");
             System.out.println("[2] Show information about a book");
             System.out.println("[3] Borrow book");
@@ -96,7 +96,7 @@ public class Library {
             System.out.println("[8] Show all users (librarian only)");
             System.out.println("[9] Exit libraryprogram");
             Scanner scanner = new Scanner(System.in);
-            int choice = readIntegerFromUser("-------ENTER MENU CHOICE-----------");
+            int choice = readIntegerFromUser("-------CHOOSE BY TYPE IN A NUMBER FROM MENU AND PRESS ENTER -----------");
 
             //switch case meny där olika metoder (se nedan) anropas
             switch (choice) {
@@ -130,14 +130,14 @@ public class Library {
                     exit();
                     break;
                 default:
-                    System.out.println("---------Wrong menu choice, try again!----------");
+                    System.out.println("---------Wrong menu choice, please try again-----------");
                     break;
             }
         }
     }
     //En metod som visar alla böcker via for-each-loop som går igenom alla böcker och printar ut de
     private void showBooks() {
-        System.out.println("Here is a list of all books: ");
+        System.out.println("Here is a list of all the books: ");
         for (Book book : books) {
             System.out.println(book);
         }
@@ -186,7 +186,7 @@ public class Library {
         // -1 för att listan börjar på 0, användarvänligt då första valet ska vara 1 och inte 0 (-1)
         //Hämtar tillgängliga böcker som man kan låna
         int choice = readIntegerFromUser("Please type the number of the book you wan't to borrow: ");
-        if (choice < 0 || choice > availableBooks.size()) {                                  //tog bort +1 efter size
+        if (choice < 1 || choice > availableBooks.size()) {
             System.out.println("------------Wrong number-------------");
             return;
         }
@@ -284,8 +284,7 @@ public class Library {
                     System.out.println(user.getName());
                 }
             }
-            //Metod för att avsluta programmet
-            //Sparar ner användare och böcker till fil när programmet avslutas
+            //Metod för att avsluta programmet, sparar ner användare och böcker till fil när programmet avslutas
             private void exit () {
             FileUtility.saveObject(LISTOFUSER_FILE, users);
             FileUtility.saveObject(LISTOFBOOK_FILE,books);
