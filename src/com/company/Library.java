@@ -8,8 +8,8 @@ import java.util.Scanner;
 
 //Class Library
 public class Library {
-    //Sparar böckerna i en fil, LISTOFBOOK_FILE
-    //Sparar användarna i en fil, LISTOFUSER_FILE
+    //Sparar böckerna i en fil, LISTOFBOOK_FILE = books.ser
+    //Sparar användarna i en fil, LISTOFUSER_FILE = users.ser
     private static final String LISTOFBOOK_FILE = "books.ser";
     private static final String LISTOFUSER_FILE = "users.ser";
 
