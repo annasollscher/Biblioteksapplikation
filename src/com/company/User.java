@@ -27,15 +27,15 @@ public class User implements Serializable {
     }
     //Skickar tillbaka en lista (returnerar den) med alla lånade böcker
     public ArrayList<Book> getBorrowedBooks() {
-        return borrowedBooks;
+        return new ArrayList<>(borrowedBooks);
     }
     /** metod som tar emot en bok som ska lämnas tillbaka
     *SKickar in en bok som argument (Book book)
     *Ändrar att boken inte längre är lånad (setBorrowed = false)
     *Tar bort boken från listan av lånade böcker,(borrowedBooks.remove)
      */
-    public void returnBook (Book book) {
-        book.setBorrowed(false);
-        borrowedBooks.remove(book);
+    public Book returnBook (int index) {
+        //book.setBorrowed(false);
+        return borrowedBooks.remove(index);
     }
 }
