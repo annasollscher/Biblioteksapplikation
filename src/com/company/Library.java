@@ -40,8 +40,8 @@ public class Library {
      */
     private void logIn () {
         while (true) {
-            System.out.println("-----------------------Dear user, welcome to the library-------------------------");
-            System.out.println("----------------------Please write your username to login and press enter------------------------");
+            System.out.println("--------------------------Dear user, welcome to the library--------------------------");
+            System.out.println("------------------Please write your username to login and press enter----------------");
             String userName = scanner.nextLine();
             for (User user : users) {
                 if (user.getName().equals(userName)) {
@@ -66,9 +66,10 @@ public class Library {
     *Try-catch metoden används för att se om det användaren matar in kan omvandlas till ett tal
      */
     private int readIntegerFromUser (String message) {
+        System.out.println(message);
         while (true) {
             try {
-                System.out.println(message);
+
                 //Omvandling, det som användaren läser in
                 //NumberFormatException = om det som användaren matar in ej kan omvandlas till ett tal, skrivs texten "could not convert..."
                 return Integer.parseInt(scanner.nextLine());
@@ -85,7 +86,7 @@ public class Library {
     public void showMenu() {
         boolean continueToRun = true;
         while (continueToRun) {
-            System.out.println("-------------DEAR USER, PLEASE MAKE A CHOICE FROM THE LIST----------------");
+            System.out.println("------------DEAR USER, PLEASE MAKE A CHOICE FROM THE LIST-------------------");
             System.out.println("[1] Show all books");
             System.out.println("[2] Show information about a book");
             System.out.println("[3] Borrow book");
@@ -96,7 +97,7 @@ public class Library {
             System.out.println("[8] Show all users (librarian only)");
             System.out.println("[9] Exit libraryprogram");
             Scanner scanner = new Scanner(System.in);
-            int choice = readIntegerFromUser("-------CHOOSE BY TYPE IN A NUMBER FROM MENU AND PRESS ENTER -----------");
+            int choice = readIntegerFromUser("------CHOOSE BY TYPE IN A NUMBER FROM THE MENU AND PRESS ENTER---------");
 
             //switch case meny där olika metoder (se nedan) anropas
             switch (choice) {
@@ -125,7 +126,7 @@ public class Library {
                     showAllUsers();
                     break;
                 case 9:
-                    System.out.println("-------Shutting down the program, hope see you soon!------");
+                    System.out.println("-------The program ends, hope see you soon!------");
                     continueToRun = false;
                     exit();
                     break;
@@ -148,20 +149,24 @@ public class Library {
     *Listan börjar från 1, alltså i + 1 istället för 0
      */
     private void showInformation() {
-        for (int i = 0; i < books.size(); i++) {
-            System.out.printf("%d. %s \n", i + 1, books.get(i).getTitle());
+        while (true) {
+            for (int i = 0; i < books.size(); i++) {
+                System.out.printf("%d. %s \n", i + 1, books.get(i).getTitle());
+            }
+            /**Anropar metod för att läsa in heltal från användaren, användaren kan mata in ett index som scannas in
+             *Om valet är mindre än 1 och större än arraylistans längd, kan man ej välja boken
+             *Annars hämtas bokvalet ut (books.get(choice -1), -1 för att listan början på 0 och användaren räknar från 1
+             *Om man ej har - 1 får man ex nr 3 när man väljer nr 4
+             */
+            int choice = readIntegerFromUser("Enter the number of some of the book above to get more info about that book:");
+            if (choice < 1 || choice > books.size()) {
+                System.out.println("----------------You typed in wrong number-------------");
+                continue;
+            }
+            System.out.println("You choosed this book: ");
+            System.out.println(books.get(choice - 1));
+            break;
         }
-        /**Anropar metod för att läsa in heltal från användaren, användaren kan mata in ett index som scannas in
-        *Om valet är mindre än 1 och större än arraylistans längd, kan man ej välja boken
-        *Annars hämtas bokvalet ut (books.get(choice -1), -1 för att listan början på 0 och användaren räknar från 1
-        *Om man ej har - 1 får man ex nr 3 när man väljer nr 4
-         */
-        int choice = readIntegerFromUser("Enter the number of some of the book above to get more info about that book:");
-        if (choice < 1 || choice > books.size()) {
-            System.out.println("----------------You typed in wrong number-------------");
-            return;
-        }
-        System.out.println(books.get(choice -1));
     }
     /**metod: borrowBook, Lista av tillgängliga böcker, Går igenom alla böcker
     *om boken inte är utlånad (! book.isBorrowed), lägger man till boken i listan availableBooks
@@ -178,20 +183,23 @@ public class Library {
          * %d, tar ett nr = books.get(i), alltså vilket index boken har, %s = hämtar ut strängen, i detta fall Title(book.getTitle)
          * Listan börjar från 1, alltså i + 1 istället för 0
          */
-        for (int i = 0; i < availableBooks.size(); i++) {
-            System.out.printf("%d. %s \n", i + 1, availableBooks.get(i).getTitle());
+        while(true) {
+            for (int i = 0; i < availableBooks.size(); i++) {
+                System.out.printf("%d. %s \n", i + 1, availableBooks.get(i).getTitle());
+            }
+            //Användaren kan mata in ett index som scannas in, anropar readIntegerFromUser för att se om det är ett heltal användaren matar in
+            //If för att kontrollera om valet är mindre än 0 eller större än listans size
+            // -1 för att listan börjar på 0, användarvänligt då första valet ska vara 1 och inte 0 (-1)
+            //Hämtar tillgängliga böcker som man kan låna
+            int choice = readIntegerFromUser("Please type the number of the book you wan't to borrow: ");
+            if (choice < 1 || choice > availableBooks.size()) {
+                System.out.println("------------Wrong number-------------");
+                continue;
+            }
+            System.out.println("The book you borrowed: " + availableBooks.get(choice - 1));
+            user.borrowBook(availableBooks.get(choice - 1));
+            break;
         }
-        //Användaren kan mata in ett index som scannas in, anropar readIntegerFromUser för att se om det är ett heltal användaren matar in
-        //If för att kontrollera om valet är mindre än 0 eller större än listans size
-        // -1 för att listan börjar på 0, användarvänligt då första valet ska vara 1 och inte 0 (-1)
-        //Hämtar tillgängliga böcker som man kan låna
-        int choice = readIntegerFromUser("Please type the number of the book you wan't to borrow: ");
-        if (choice < 1 || choice > availableBooks.size()) {
-            System.out.println("------------Wrong number-------------");
-            return;
-        }
-        System.out.println("The book you borrowed: " + availableBooks.get(choice -1));
-        user.borrowBook(availableBooks.get(choice -1));
 
     }
     /**Metod där man kan söka på bok, genom olika val, titel, författare
@@ -210,8 +218,8 @@ public class Library {
                 //Anropar metod för att mata in till ett heltal
                 int choice = readIntegerFromUser("-------------Enter choice----------------");
                 if (choice < 0 || choice > 2) {
-                    System.out.println("--------------Dear user, you entered wrong number-------------");
-                    return;
+                    System.out.println("----------Dear user, you entered wrong number, try again with the choices below-----------");
+                    continue;
                 }
                 if (choice == 0) {
                     return;
@@ -235,11 +243,17 @@ public class Library {
                         System.out.println("We found: " + book.getAuthor());
                     }
                 }
+                break;
             }
         }
              //Metod som visar de lånade böckerna, Foor - each loop som lopar igenom användarens lånade böcker, via get metoden
             //Går igenom böckerna som en användare har lånat
             private void showBorrowedBooks () {
+                System.out.println("Here is the list with your borrowed books: ");
+                if(user.getBorrowedBooks().isEmpty()) {
+                    System.out.println("You have no borrowed books!");
+                    return;
+                }
                 for (Book book : user.getBorrowedBooks()) {
                     System.out.println(book);
                 }
@@ -247,6 +261,11 @@ public class Library {
             //Metod som lämnar tillbaka bok
             //Skriver ut alla lånade böcker som användaren har lånat, via for-loop
             private void returnBook () {
+                System.out.println("Here is the list of books that you can return: ");
+                if(user.getBorrowedBooks().isEmpty()) {
+                    System.out.println("------You have no books to return!-----------");
+                    return;
+                }
                 for (int i = 0; i < user.getBorrowedBooks().size(); i++) {
                     System.out.printf("%d. %s \n", i + 1, user.getBorrowedBooks().get(i).getTitle());
                 }
@@ -257,7 +276,7 @@ public class Library {
                 *Anropar returnBook från user, skickar med boken som användaren har valt, .get hämtar ut en specifik bok
                  */
                 int choice = readIntegerFromUser("Please type the number of book you wan't to return: ");
-                if(choice<0 || choice > user.getBorrowedBooks().size()) {
+                if(choice <1 || choice > user.getBorrowedBooks().size()) {
                     System.out.println("----Wrong number----");
                     return;
                 }
@@ -267,8 +286,9 @@ public class Library {
             private void showAvailableBooks () {
                 System.out.println("Here are the available books: ");
                 for (Book book : books) {
+                    System.out.println("Test: " + book.getTitle() + ":" + book.isBorrowed());
                     if (!book.isBorrowed()) {
-                        System.out.println(book);
+                        //System.out.println(book);
                     }
                 }
             }
